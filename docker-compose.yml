@@ -1,0 +1,30 @@
+version: '3.8'
+
+volumes:
+  db_data:
+
+services:
+  wp:
+    image: wordpress
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: demo-wp
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/var/www/html
+
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: demo-wp
+    volumes:
+      - db_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
